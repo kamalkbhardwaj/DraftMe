@@ -8,15 +8,6 @@ A SwiftUI app targeting iOS with a lightweight MVI (Model–View–Intent) archi
 
 ## Architecture
 
-```mermaid
-flowchart LR
-    U[User] --> V[View (SwiftUI)]
-    V --> I[Intent (User/System Actions)]
-    I --> M[Model (Use Cases, Services)]
-    M --> S[State (Immutable ViewState)]
-    S -->|render| V
-```
-
 - View: Renders `State`, forwards events to `Intent`.
 - Intent: Maps UI events to actions; triggers `Model` work.
 - Model: Business logic, side-effects (network, storage), emits new `State`.
