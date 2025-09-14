@@ -6,6 +6,14 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		8EF3EF052E7715C10082EB25 /* DraftMeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF3EF002E7715C10082EB25 /* DraftMeApp.swift */; };
+		8EF3EF062E7715C10082EB25 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8EF3EF022E7715C10082EB25 /* Assets.xcassets */; };
+		8EF3EF0C2E77163B0082EB25 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF3EF0B2E7716370082EB25 /* HomeViewModel.swift */; };
+		8EF3EF102E7716E20082EB25 /* HomeViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF3EF0F2E7716B90082EB25 /* HomeViewState.swift */; };
+		8EF3EF122E77187F0082EB25 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF3EF112E77187D0082EB25 /* HomeView.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		8EF3EEDF2E770A080082EB25 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,14 +35,15 @@
 		8EF3EECE2E770A050082EB25 /* DraftMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DraftMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EF3EEDE2E770A080082EB25 /* DraftMeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DraftMeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EF3EEE82E770A080082EB25 /* DraftMeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DraftMeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8EF3EEFF2E7715C10082EB25 /* DraftMe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DraftMe.entitlements; sourceTree = "<group>"; };
+		8EF3EF002E7715C10082EB25 /* DraftMeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftMeApp.swift; sourceTree = "<group>"; };
+		8EF3EF022E7715C10082EB25 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8EF3EF0B2E7716370082EB25 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		8EF3EF0F2E7716B90082EB25 /* HomeViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewState.swift; sourceTree = "<group>"; };
+		8EF3EF112E77187D0082EB25 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		8EF3EED02E770A050082EB25 /* DraftMe */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = DraftMe;
-			sourceTree = "<group>";
-		};
 		8EF3EEE12E770A080082EB25 /* DraftMeTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = DraftMeTests;
@@ -75,7 +84,7 @@
 		8EF3EEC52E770A050082EB25 = {
 			isa = PBXGroup;
 			children = (
-				8EF3EED02E770A050082EB25 /* DraftMe */,
+				8EF3EF042E7715C10082EB25 /* DraftMe */,
 				8EF3EEE12E770A080082EB25 /* DraftMeTests */,
 				8EF3EEEB2E770A080082EB25 /* DraftMeUITests */,
 				8EF3EECF2E770A050082EB25 /* Products */,
@@ -92,6 +101,51 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		8EF3EF012E7715C10082EB25 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				8EF3EEFF2E7715C10082EB25 /* DraftMe.entitlements */,
+				8EF3EF002E7715C10082EB25 /* DraftMeApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		8EF3EF032E7715C10082EB25 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8EF3EF022E7715C10082EB25 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		8EF3EF042E7715C10082EB25 /* DraftMe */ = {
+			isa = PBXGroup;
+			children = (
+				8EF3EF012E7715C10082EB25 /* App */,
+				8EF3EF072E7716030082EB25 /* Features */,
+				8EF3EF032E7715C10082EB25 /* Resources */,
+			);
+			path = DraftMe;
+			sourceTree = "<group>";
+		};
+		8EF3EF072E7716030082EB25 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				8EF3EF082E7716180082EB25 /* Home */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		8EF3EF082E7716180082EB25 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				8EF3EF112E77187D0082EB25 /* HomeView.swift */,
+				8EF3EF0F2E7716B90082EB25 /* HomeViewState.swift */,
+				8EF3EF0B2E7716370082EB25 /* HomeViewModel.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -106,9 +160,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				8EF3EED02E770A050082EB25 /* DraftMe */,
 			);
 			name = DraftMe;
 			packageProductDependencies = (
@@ -212,6 +263,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8EF3EF062E7715C10082EB25 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,6 +288,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8EF3EF102E7716E20082EB25 /* HomeViewState.swift in Sources */,
+				8EF3EF122E77187F0082EB25 /* HomeView.swift in Sources */,
+				8EF3EF052E7715C10082EB25 /* DraftMeApp.swift in Sources */,
+				8EF3EF0C2E77163B0082EB25 /* HomeViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,7 +444,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = DraftMe/DraftMe.entitlements;
+				CODE_SIGN_ENTITLEMENTS = DraftMe/App/DraftMe.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
@@ -426,7 +482,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = DraftMe/DraftMe.entitlements;
+				CODE_SIGN_ENTITLEMENTS = DraftMe/App/DraftMe.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
