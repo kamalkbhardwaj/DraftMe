@@ -1,0 +1,38 @@
+# macOS
+.DS_Store
+
+# Xcode build artifacts
+build/
+Build/
+DerivedData/
+
+# Xcode user settings (keep project/schemes shared)
+**/*.pbxuser
+!**/*default.pbxuser
+**/*.mode1v3
+!**/*default.mode1v3
+**/*.mode2v3
+!**/*default.mode2v3
+**/*.perspectivev3
+!**/*default.perspectivev3
+**/xcuserdata/
+*.xcuserstate
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
+
+# Swift Package Manager
+.swiftpm/
+.build/
+
+# Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+# Logs, crashes, temp
+*.log
+*.crash
+*.orig
+*.swp
+*.swo
+
