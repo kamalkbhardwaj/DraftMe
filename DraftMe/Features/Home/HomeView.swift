@@ -16,14 +16,17 @@ struct HomeView: View {
     }
     
     var body: some View {
-        VStack {
-            // ToDo - later
+        NavigationSplitView {
+            MenuView()
+                .navigationSplitViewColumnWidth(min: 180, ideal: 200)
+        } detail: {
+            TemplatesView(viewModel: .init())
         }
     }
 }
 
 #if DEBUG
-#Preview {
+#Preview("Portrait") {
     HomeView(model: .init())
 }
 #endif
