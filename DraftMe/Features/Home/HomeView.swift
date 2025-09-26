@@ -10,6 +10,7 @@ import SwiftUI
 struct HomeView: View {
     
     @State var model: HomeViewModel
+    @State var selectedMenu: MenuView.Destination = .new
     
     init(model: HomeViewModel) {
         self.model = model
@@ -17,10 +18,12 @@ struct HomeView: View {
     
     var body: some View {
         NavigationSplitView {
-            MenuView()
+            MenuView(selected: $selectedMenu)
                 .navigationSplitViewColumnWidth(min: 180, ideal: 200)
         } detail: {
-            TemplatesView(viewModel: .init())
+            withAnimation(.easeIn(duration: 0.5)) {
+                selectedMenu.destination
+            }
         }
     }
 }

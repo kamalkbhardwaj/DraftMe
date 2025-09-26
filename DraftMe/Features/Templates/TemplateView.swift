@@ -9,11 +9,11 @@ import SwiftUI
 
 struct TemplatesView: View {
     
-    @State var viewModel: TemplatesViewModel
+    @State var model: TemplatesViewModel
     @State var orientation: UIDeviceOrientation = .portrait
     
-    init(viewModel: TemplatesViewModel) {
-        self.viewModel = viewModel
+    init(model: TemplatesViewModel) {
+        self.model = model
     }
     
     var body: some View {
@@ -48,9 +48,9 @@ struct TemplatesView: View {
 
 #if DEBUG
 #Preview("Portrait") {
-    TemplatesView(viewModel: .init())
+    TemplatesView(model: .init())
 }
 #Preview("Landscape Left", traits: .landscapeLeft) {
-    TemplatesView(viewModel: .init())
+    TemplatesView(model: .init())
 }
 #endif

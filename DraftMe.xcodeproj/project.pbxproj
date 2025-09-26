@@ -19,6 +19,8 @@
 		8EF3EF662E771F420082EB25 /* CanvasViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF3EF652E771F3D0082EB25 /* CanvasViewModel.swift */; };
 		8EF3EF682E771F520082EB25 /* CanvasState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF3EF672E771F500082EB25 /* CanvasState.swift */; };
 		8EF3EF6B2E77220B0082EB25 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF3EF6A2E7722060082EB25 /* MenuView.swift */; };
+		8EF3EF882E7873040082EB25 /* PDFGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF3EF872E7873010082EB25 /* PDFGenerator.swift */; };
+		8EFFB3A52E86FE7E00ADF8C5 /* Resume.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EFFB3A32E86FE7E00ADF8C5 /* Resume.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +57,8 @@
 		8EF3EF652E771F3D0082EB25 /* CanvasViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasViewModel.swift; sourceTree = "<group>"; };
 		8EF3EF672E771F500082EB25 /* CanvasState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasState.swift; sourceTree = "<group>"; };
 		8EF3EF6A2E7722060082EB25 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		8EF3EF872E7873010082EB25 /* PDFGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFGenerator.swift; sourceTree = "<group>"; };
+		8EFFB3A32E86FE7E00ADF8C5 /* Resume.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resume.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -187,6 +191,8 @@
 		8EF3EF692E7721F70082EB25 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				8EFFB3A42E86FE7E00ADF8C5 /* Models */,
+				8EF3EF872E7873010082EB25 /* PDFGenerator.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -197,6 +203,14 @@
 				8EF3EF6A2E7722060082EB25 /* MenuView.swift */,
 			);
 			path = Menu;
+			sourceTree = "<group>";
+		};
+		8EFFB3A42E86FE7E00ADF8C5 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8EFFB3A32E86FE7E00ADF8C5 /* Resume.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -347,7 +361,9 @@
 				8EF3EF682E771F520082EB25 /* CanvasState.swift in Sources */,
 				8EF3EF642E771F3A0082EB25 /* CanvasView.swift in Sources */,
 				8EF3EF6B2E77220B0082EB25 /* MenuView.swift in Sources */,
+				8EF3EF882E7873040082EB25 /* PDFGenerator.swift in Sources */,
 				8EF3EF5F2E771F1D0082EB25 /* TemplatesViewModel.swift in Sources */,
+				8EFFB3A52E86FE7E00ADF8C5 /* Resume.swift in Sources */,
 				8EF3EF052E7715C10082EB25 /* DraftMeApp.swift in Sources */,
 				8EF3EF5D2E771F0F0082EB25 /* TemplateView.swift in Sources */,
 				8EF3EF612E771F260082EB25 /* TemplatesState.swift in Sources */,
