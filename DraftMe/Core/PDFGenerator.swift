@@ -1,20 +1,28 @@
 //
-//  Untitled.swift
+//  PDFGenerator.swift
 //  DraftMe
 //
 //  Created by Kamal Kishor on 15/09/25.
 //
 
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
+#endif
+#if canImport(AppKit)
+import AppKit
+#endif
 import PDFKit
 import CoreText
 
 struct PDFGenerator {
+    // MARK: - Page settings
     static private let a4Size = CGSize(width: 595, height: 842) // A4 at 72 DPI
-    static private let pageMargins = UIEdgeInsets(top: 48, left: 48, bottom: 48, right: 48)
+    private struct Insets { let top: CGFloat; let left: CGFloat; let bottom: CGFloat; let right: CGFloat }
+    static private let pageMargins = Insets(top: 48, left: 48, bottom: 48, right: 48)
 
-    // Legacy rasterizing API (kept for compatibility; not ATS-optimal).
+    // Legacy rasterizing API (kept for compatibility; not ATS-optimal, iOS only).
+    #if canImport(UIKit)
     static func generatePDF<V: View>(from views: [V], fileURL: URL) {
         let renderer = UIGraphicsPDFRenderer(bounds: CGRect(origin: .zero, size: a4Size))
         let data = renderer.pdfData { context in
@@ -27,45 +35,50 @@ struct PDFGenerator {
         }
         try? data.write(to: fileURL)
     }
+    #endif
 
-    // ATS-friendly: text stays selectable and searchable.
+    // MARK: - ATS-friendly export (text stays selectable/searchable)
     static func generatePDF(from resume: Resume, fileName: String) -> URL? {
         let docURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         let outURL = (docURL ?? URL(fileURLWithPath: NSTemporaryDirectory())).appendingPathComponent(fileName)
 
-        let renderer = UIGraphicsPDFRenderer(bounds: CGRect(origin: .zero, size: a4Size))
-        let data = renderer.pdfData { ctx in
-            let contentRect = CGRect(
-                x: pageMargins.left,
-                y: pageMargins.top,
-                width: a4Size.width - pageMargins.left - pageMargins.right,
-                height: a4Size.height - pageMargins.top - pageMargins.bottom
-            )
+        // Create a CoreGraphics PDF context that works on iOS and macOS.
+        let data = NSMutableData()
+        guard let consumer = CGDataConsumer(data: data as CFMutableData) else { return nil }
+        var mediaBox = CGRect(origin: .zero, size: a4Size)
+        guard let ctx = CGContext(consumer: consumer, mediaBox: &mediaBox, nil) else { return nil }
 
-            let attributed = makeAttributedResume(resume)
-            var framesetter = CTFramesetterCreateWithAttributedString(attributed as CFAttributedString)
-            var currentRange = CFRange(location: 0, length: 0)
-            var done = false
+        let contentRect = CGRect(
+            x: pageMargins.left,
+            y: pageMargins.top,
+            width: a4Size.width - pageMargins.left - pageMargins.right,
+            height: a4Size.height - pageMargins.top - pageMargins.bottom
+        )
 
-            while !done {
-                ctx.beginPage()
-                let path = CGMutablePath()
-                path.addRect(contentRect)
-                let frame = CTFramesetterCreateFrame(framesetter, currentRange, path, nil)
-                if let context = UIGraphicsGetCurrentContext() {
-                    context.textMatrix = .identity
-                    context.translateBy(x: 0, y: a4Size.height)
-                    context.scaleBy(x: 1.0, y: -1.0)
-                }
-                CTFrameDraw(frame, UIGraphicsGetCurrentContext()!)
+        let attributedText = makeAttributedResume(resume)
+        let framesetter = CTFramesetterCreateWithAttributedString(attributedText as CFAttributedString)
+        var currentRange = CFRange(location: 0, length: 0)
 
-                let visibleRange = CTFrameGetVisibleStringRange(frame)
-                currentRange = CFRange(location: visibleRange.location + visibleRange.length, length: 0)
-                if currentRange.location >= attributed.length {
-                    done = true
-                }
-            }
+        while currentRange.location < attributedText.length {
+            ctx.beginPDFPage(nil)
+
+            let path = CGMutablePath()
+            path.addRect(contentRect)
+            let frame = CTFramesetterCreateFrame(framesetter, currentRange, path, nil)
+
+            ctx.saveGState()
+            ctx.textMatrix = .identity
+            ctx.translateBy(x: 0, y: a4Size.height)
+            ctx.scaleBy(x: 1.0, y: -1.0)
+            CTFrameDraw(frame, ctx)
+            ctx.restoreGState()
+
+            let visibleRange = CTFrameGetVisibleStringRange(frame)
+            currentRange = CFRange(location: visibleRange.location + visibleRange.length, length: 0)
+            ctx.endPDFPage()
         }
+
+        ctx.closePDF()
 
         do {
             try data.write(to: outURL)
@@ -77,10 +90,37 @@ struct PDFGenerator {
     }
 
     private static func makeAttributedResume(_ resume: Resume) -> NSAttributedString {
-        let bodyFont = UIFont.systemFont(ofSize: 11)
-        let headerFont = UIFont.boldSystemFont(ofSize: 20)
-        let subHeaderFont = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        let bold = UIFont.boldSystemFont(ofSize: 11)
+        // Cross-platform font helpers
+        enum FontWeight { case regular, bold, semibold }
+        func platformFont(_ size: CGFloat, _ weight: FontWeight) -> Any {
+            #if canImport(UIKit)
+            switch weight {
+            case .regular: return UIFont.systemFont(ofSize: size)
+            case .bold: return UIFont.boldSystemFont(ofSize: size)
+            case .semibold: return UIFont.systemFont(ofSize: size, weight: .semibold)
+            }
+            #elseif canImport(AppKit)
+            switch weight {
+            case .regular: return NSFont.systemFont(ofSize: size)
+            case .bold: return NSFont.boldSystemFont(ofSize: size)
+            case .semibold: return NSFont.systemFont(ofSize: size, weight: .semibold)
+            }
+            #else
+            // Fallback to CoreText fonts if neither UIKit nor AppKit is available
+            let name: CFString
+            switch weight {
+            case .regular: name = "Helvetica" as CFString
+            case .bold: name = "Helvetica-Bold" as CFString
+            case .semibold: name = "Helvetica-Bold" as CFString
+            }
+            return CTFontCreateWithName(name, size, nil)
+            #endif
+        }
+
+        let bodyFont = platformFont(11, .regular)
+        let headerFont = platformFont(20, .bold)
+        let subHeaderFont = platformFont(12, .semibold)
+        let boldFont = platformFont(11, .bold)
 
         let para = NSMutableParagraphStyle()
         para.lineSpacing = 2
@@ -108,7 +148,7 @@ struct PDFGenerator {
         // Experience
         builder.append(NSAttributedString(string: "EXPERIENCE\n", attributes: [.font: subHeaderFont]))
         for exp in resume.experience {
-            builder.append(NSAttributedString(string: "\(exp.role) – \(exp.company)\n", attributes: [.font: bold]))
+            builder.append(NSAttributedString(string: "\(exp.role) – \(exp.company)\n", attributes: [.font: boldFont]))
             builder.append(NSAttributedString(string: "\(exp.location) • \(exp.startDate) – \(exp.endDate)\n", attributes: bodyAttrs))
             for bullet in exp.bullets where !bullet.isEmpty {
                 builder.append(NSAttributedString(string: "• \(bullet)\n", attributes: bodyAttrs))
@@ -135,7 +175,7 @@ struct PDFGenerator {
         if !resume.education.isEmpty {
             builder.append(NSAttributedString(string: "EDUCATION\n", attributes: [.font: subHeaderFont]))
             for edu in resume.education {
-                builder.append(NSAttributedString(string: "\(edu.institution)\n", attributes: [.font: bold]))
+                builder.append(NSAttributedString(string: "\(edu.institution)\n", attributes: [.font: boldFont]))
                 builder.append(NSAttributedString(string: "\(edu.degree) • \(edu.startDate) – \(edu.endDate)\n\n", attributes: bodyAttrs))
             }
         }
