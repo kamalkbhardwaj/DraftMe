@@ -10,7 +10,6 @@ import SwiftUI
 struct TemplatesView: View {
     
     @State var model: TemplatesViewModel
-    @State var orientation: UIDeviceOrientation = .portrait
     
     init(model: TemplatesViewModel) {
         self.model = model
@@ -21,16 +20,10 @@ struct TemplatesView: View {
             gridView
         }
         .scrollIndicators(.hidden)
-        .onAppear {
-            self.orientation = UIDevice.current.orientation
-        }
-        .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-            self.orientation = UIDevice.current.orientation
-        }
     }
     
     private var gridView: some View {
-        LazyVGrid(columns: columns) {
+        LazyVGrid(columns: columns, spacing: 12) {
             ForEach(0..<12, id: \.self) { number in
                 RoundedRectangle(cornerRadius: 8.0)
                     .foregroundStyle(LinearGradient(colors: [.red.opacity(1.0), .red.opacity(0.3), ], startPoint: .topLeading, endPoint: .bottomTrailing))
@@ -41,16 +34,12 @@ struct TemplatesView: View {
     }
     
     private var columns: [GridItem] {
-        let gridItem: GridItem = .init(.flexible())
-        return .init(repeating: gridItem, count: orientation == .portrait ? 3 : 4)
+        [GridItem(.adaptive(minimum: 180, maximum: 240), spacing: 12)]
     }
 }
 
 #if DEBUG
-#Preview("Portrait") {
-    TemplatesView(model: .init())
-}
-#Preview("Landscape Left", traits: .landscapeLeft) {
+#Preview {
     TemplatesView(model: .init())
 }
 #endif

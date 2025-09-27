@@ -20,19 +20,9 @@ struct CanvasView: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
-            header
-            Divider()
-            content
-        }
+        contentView
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Export PDF") {
-                        exportResume()
-                    }
-                    .foregroundStyle(Color.primary)
-                }
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItemGroup(placement: .automatic) {
                     Picker("Mode", selection: $mode) {
                         Text("Edit").tag(Mode.edit)
                         Text("Styled").tag(Mode.styled)
@@ -40,7 +30,18 @@ struct CanvasView: View {
                     }
                     .pickerStyle(.segmented)
                     .frame(width: 260)
+
+                    Button("Export PDF") { exportResume() }
+                        .foregroundStyle(Color.primary)
                 }
+            }
+    }
+    
+    private var contentView: some View {
+            VStack(spacing: 0) {
+                header
+                Divider()
+                content
             }
     }
     
@@ -219,7 +220,7 @@ struct CanvasView: View {
             }
             .padding()
         }
-        .accessibilityElement(children: .contain)
+        .accessibilityElement(children: .combine)
     }
 
     private var styledPreview: some View {
@@ -274,7 +275,7 @@ struct CanvasView: View {
                 }
                 .frame(width: 220)
                 .padding(16)
-                .background(Color(.systemGray6))
+                .background(Color.gray.opacity(0.08))
 
                 // Right main
                 VStack(alignment: .leading, spacing: 16) {
@@ -324,8 +325,8 @@ struct CanvasView: View {
             .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
             .padding()
         }
-        .background(Color(.systemGroupedBackground))
-        .accessibilityElement(children: .contain)
+        .background(Color.gray.opacity(0.04))
+        .accessibilityElement(children: .combine)
     }
 
     private func sectionHeader(_ title: String) -> some View {
@@ -349,4 +350,8 @@ private enum SafeFileName {
         let replaced = raw.unicodeScalars.map { invalid.contains($0) ? "-" : String($0) }.joined()
         return replaced.replacingOccurrences(of: " ", with: " ")
     }
+}
+
+#Preview {
+    CanvasView(model: .init())
 }
